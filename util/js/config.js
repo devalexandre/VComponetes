@@ -1,0 +1,11 @@
+
+$().ready(function(){
+	
+
+
+	$('.carousel').carousel();
+
+
+
+
+})
