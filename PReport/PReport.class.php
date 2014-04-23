@@ -60,8 +60,8 @@ private $pdf;
 
  }
 
-    public function img($img,$width = 100,$heigth = 140){
+    public function addImg($img,$x = 10 , $y = 10  $width = 100,$heigth = 140){
 
-        $this->pdf->Image($img,10,10,$width,$heigth);
+        $this->pdf->Image($img,$x,$y,$width,$heigth);
     }
 }
