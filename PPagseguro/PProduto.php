@@ -1,0 +1,107 @@
+<?php
+
+
+
+class PProduto{
+	
+	private $id;
+	private $nome;
+	private $descricao;
+	private $preco;
+	private $qtd;
+	
+	
+	/**
+	 * Returns the nome value.
+	 *
+	 * @return variableType
+	 */
+	public function getNome() {
+	    return $this->nome;
+	}
+	 
+	/**
+	 * Set the nome value.
+	 *
+	 * @param variableType $nome
+	 */
+	public function setNome($nome) {
+	    $this->nome = $nome;
+	}
+	
+	
+	/**
+	 * Returns the descricao value.
+	 *
+	 * @return variableType
+	 */
+	public function getDescricao() {
+	    return $this->descricao;
+	}
+	 
+	/**
+	 * Set the descricao value.
+	 *
+	 * @param variableType $descricao
+	 */
+	public function setDescricao($descricao) {
+	    $this->descricao = $descricao;
+	}
+	
+	
+/**
+ * Returns the preco value.
+ *
+ * @return variableType
+ */
+public function getPreco() {
+    return $this->preco;
+}
+ 
+/**
+ * Set the preco value.
+ *
+ * @param variableType $preco
+ */
+public function setPreco($preco) {
+    $this->preco = $preco;
+}
+
+	
+	/**
+	 * Returns the qtd value.
+	 *
+	 * @return variableType
+	 */
+	public function getQtd() {
+	    return $this->qtd;
+	}
+	 
+	/**
+	 * Set the qtd value.
+	 *
+	 * @param variableType $qtd
+	 */
+	public function setQtd($qtd) {
+	    $this->qtd = $qtd;
+	}
+	
+	/**
+	 * Returns the id value.
+	 *
+	 * @return variableType
+	 */
+	public function getId() {
+	    return $this->id;
+	}
+	 
+	/**
+	 * Set the id value.
+	 *
+	 * @param variableType $id
+	 */
+	public function setId($id) {
+	    $this->id = $id;
+	}
+	
+}

@@ -1,20 +1,14 @@
 <?php
-/**
- * PLabel Widget
- *
- * @version    1.0
- * @version adianti framework 1.0.2
- * @package    widget_web
- * @subpackage PForm
- * @author     Alexandre E. Souza
- */
- 
-class PLabel implements IWidget
-{
- 
-    private $value;
+
+
+
+
+class PLink extends  TField implements IWidget{
+	
+
+   protected  $value;
     private $type = 'label label-default';
-    
+    private $link;
     /**
      * Class Constructor
      * @param  $value text label
@@ -30,14 +24,26 @@ class PLabel implements IWidget
         
                
         // create a new element
-        $this->tag = new TElement('label');
+        $this->tag = new TElement('a');
         $this->tag->{'class'} = $this->type ;
+       
         
         $this->tag-> onmouseover = "style.cursor='default'";
         
      
      
     }
+    
+    /**
+     * Define the field's name
+     * @param $name   A string containing the field's name
+     */
+    public function setLink($link)
+    {
+    	$this->link = $link;
+    }
+    
+   
     
        /**
      * Define the field's name
@@ -136,11 +142,10 @@ class PLabel implements IWidget
    
      
             // add content to the tag
-            $this->tag->add($this->value);
-        
+            $this->tag->add($this->getValue());
+            $this->tag->href = $this->link;
         
         // show the tag
         $this->tag->show();
     }
 }
-?>

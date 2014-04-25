@@ -12,7 +12,7 @@
  */
  
  
-class PButton implements IWidget
+class PButton  extends TField implements IWidget
 {
     private $action;
     private $label;
