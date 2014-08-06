@@ -32,8 +32,20 @@ class PCliente{
 	 *
 	 * @param String $nome
 	 */
-	public function setNome($nome) {
-	    $this->nome = $nome;
+	public function setNome($name) {
+
+        $name = preg_replace('/\d/', '', $name);
+        $name = preg_replace('/[\n\t\r]/', ' ', $name);
+        $name = preg_replace('/\s(?=\s)/', '', $name);
+        $name = trim($name);
+        $name = explode(' ', $name);
+
+        if(count($name) == 1 ) {
+            $name[] = ' dos Santos';
+        }
+        $name = implode(' ', $name);
+
+	    $this->nome = $name;
 	}
 	
 	

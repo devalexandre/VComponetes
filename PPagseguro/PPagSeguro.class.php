@@ -8,19 +8,12 @@ private $conta;
 private $token;
 
 
-public function setConta($conta){
-	
-	$this->conta = $conta;
-}
+function __construct($file){
 
-public function setToken($token){
-
-	$this->token = $token;
-}
-
-function __construct(){
 	PagSeguroLibrary::init();
-$this->pg = new PagSeguroPaymentRequest(); 
+$this->pg = new PagSeguroPaymentRequest();
+
+$this->init($file);
 
 }
 
@@ -46,7 +39,7 @@ public function addCliente(PCliente $cliente){
 		
 	}else{
 		
-		throw new Exception('Objeto não é do tipo Cliente');
+		throw new Exception('Objeto nï¿½o ï¿½ do tipo Cliente');
 	}
 	
 	
@@ -66,7 +59,7 @@ public function  addItem(PProduto $produto){
 	$this->pg->addItem($produto->getId(),$produto->getNome(),$produto->getQtd(),$produto->getPreco());
 	}else{
 	
-		throw new Exception('Objeto não é do tipo PProduto');
+		throw new Exception('Objeto nï¿½o ï¿½ do tipo PProduto');
 	}
 }
 	
@@ -74,12 +67,12 @@ public function logar(){
 	
 	if(empty($this->conta)){
 	
-		throw new Exception('conta não est setada');
+		throw new Exception('conta nï¿½o est setada');
 	}else{
 	
 		if(empty($this->token)){
 	
-			throw new Exception('token não est setada');
+			throw new Exception('token nï¿½o est setada');
 		}else{
 	
 	
@@ -98,32 +91,49 @@ public function logar(){
 
 public function getUrl(){
 	
-	
+
 	$credentials = $this->logar();
 	
-	// fazendo a requisição a API do PagSeguro pra obter a URL de pagamento
+
 	return $url = $this->pg->register($credentials);
-	}
+
+
+}
+
+    public function getButton(){
+
+        try{
+        $credentials = $this->logar();
+
+
+        return $url = $this->pg->register($credentials);
+
+    }catch (PagSeguroServiceException $e){
+
+        print_r($e->getErrors());
+
+        }
+    }
 
 
 	public function getNotificacao(){
 		
 		$credentials = $this->logar();
 	
-		/* Tipo de notificação recebida */
+		/* Tipo de notificaï¿½ï¿½o recebida */
 		$type = $_POST['notificationType'];
 		
-		/* Código da notificação recebida */
+		/* Cï¿½digo da notificaï¿½ï¿½o recebida */
 		$code = $_POST['notificationCode'];
 		
 		
-		/* Verificando tipo de notificação recebida */
+		/* Verificando tipo de notificaï¿½ï¿½o recebida */
 		if ($type === 'transaction') {
 		
-			/* Obtendo o objeto PagSeguroTransaction a partir do código de notificação */
+			/* Obtendo o objeto PagSeguroTransaction a partir do cï¿½digo de notificaï¿½ï¿½o */
 			$transaction = PagSeguroNotificationService::checkTransaction(
 					$credentials,
-					$code // código de notificação
+					$code // cï¿½digo de notificaï¿½ï¿½o
 			);
 			
 			switch ($transaction->getStatus()){
@@ -133,7 +143,7 @@ public function getUrl(){
 					break;
 					
 			    case 2:
-				   $status = "Em análise";
+				   $status = "Em anï¿½lise";
 					break;
 						
 				case 3:
@@ -141,7 +151,7 @@ public function getUrl(){
 					break;
 					
 				case 4:
-					$status = "Disponível";
+					$status = "Disponï¿½vel";
 					break;
 						
 				case 5:
@@ -168,11 +178,11 @@ public  function getDados($transacao_id){
 	
 	$credentials = $this->logar();
 	
-	/* Código identificador da transação  */
+	/* Cï¿½digo identificador da transaï¿½ï¿½o  */
 	$transaction_id = $transacao_id;
 	
 	/*
-	 Realizando uma consulta de transação a partir do código identificador
+	 Realizando uma consulta de transaï¿½ï¿½o a partir do cï¿½digo identificador
 	para obter o objeto PagSeguroTransaction
 	*/
 	$transaction = PagSeguroTransactionSearchService::searchByCode(
@@ -182,6 +192,27 @@ public  function getDados($transacao_id){
 	
 	return $transaction;
 }
+
+    private function init($file){
+        // check if the database configuration file exists
+        if (file_exists("app/config/{$file}.ini"))
+        {
+            // read the INI and retuns an array
+            $db = parse_ini_file("app/config/{$file}.ini");
+
+
+
+            $this->conta = $db['email'];
+            $this->token= $db['token'];
+
+
+        }
+        else
+        {
+            // if the database doesn't exists, throws an exception
+            throw new Exception(TAdiantiCoreTranslator::translate('File not found') . ': ' ."'{$database}.ini'");
+        }
+    }
 
 }
 ?>
