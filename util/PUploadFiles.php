@@ -13,7 +13,7 @@ class PUploadFiles {
     {
         $dir =  $_GET['dir'].'/';
 
-    
+
         $folder = $dir;
         $response = array();
         if (isset($_FILES['fileName']))
