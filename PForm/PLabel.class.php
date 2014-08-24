@@ -33,7 +33,7 @@ class PLabel implements IWidget
         $this->tag = new TElement('label');
         $this->tag->{'class'} = $this->type ;
         
-        $this->tag-> onmouseover = "style.cursor='default'";
+        $this->tag->onmouseover = "style.cursor='default'";
         
      
      
