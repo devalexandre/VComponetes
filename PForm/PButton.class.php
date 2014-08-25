@@ -27,8 +27,8 @@ class PButton  extends TField implements IWidget
 
       self::setName($name);
       $this->setType($type);
-      
-     TPage::include_css('app/lib/pwd/util/css/bootstrap.css');
+
+        TPage::include_css('app/lib/PComponetes/util/css/bootstrap.css');
      }
      
      /**

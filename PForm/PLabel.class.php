@@ -21,8 +21,8 @@ class PLabel implements IWidget
      */
     public function __construct($value,$type = 'default')
     {
-    
-    TPage::include_css('app/lib/pwd/util/css/bootstrap.css');
+
+        TPage::include_css('app/lib/PComponetes/util/css/bootstrap.css');
         
         // set the label's content
         $this->setValue($value);
@@ -61,7 +61,13 @@ class PLabel implements IWidget
     
     $this->value = $v;
     }
-    
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+
     /**
      * Define the font size
      * @param $size Font size in pixels
@@ -131,11 +137,7 @@ class PLabel implements IWidget
      */
     public function show()
     {
-       
-        
-   
-     
-            // add content to the tag
+           // add content to the tag
             $this->tag->add($this->value);
         
         
