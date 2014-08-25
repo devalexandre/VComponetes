@@ -6,7 +6,7 @@
  * Time: 10:08 AM
  */
 
-class PMessage extends TWindow{
+class PMessage extends TElement{
 
 
 
@@ -17,7 +17,16 @@ class PMessage extends TWindow{
      */
 
     function __construct($type,$titulo,$msg){
-       parent::__construct('');
+       parent::__construct('div');
+
+        TPage::include_js('app/lib/PComponetes/util/jquery-ui/jquery-ui.js');
+        TPage::include_css('app/lib/PComponetes/util/jquery-ui/jquery-ui.css');
+        TPage::include_css('app/lib/PComponetes/util/jquery-ui/jquery-ui.structure.css');
+        TPage::include_css('app/lib/PComponetes/util/jquery-ui/jquery-ui.theme.min.css');
+
+        $this->id = uniqid();
+        $this->title = $titulo;
+
 
 $panel = new TElement('div');
 $body = new TElement('div');
@@ -29,10 +38,10 @@ $body = new TElement('div');
 
         $body->add($msg);
 
-        $this->setTitle($titulo);
+
         $box = new TVBox();
 
-        $this->setSize(400,300);
+
 
         $box->add($this->setType($type));
         $box->add($panel);
@@ -106,6 +115,32 @@ public function getProperties()
 }
 
 
+public function show(){
 
+
+    $script = new TElement('script');
+
+    $script->{'type'} = 'text/javascript';
+
+    $script->add('
+
+     $().ready(function() {
+
+$( "#'.$this->id.'" ).dialog({
+modal: true,
+buttons: {
+Ok: function() {
+$( this ).dialog( "close" );
+}
+}
+
+});
+
+});
+    ');
+
+    $script->show();
+    parent::show();
+}
 }
 
