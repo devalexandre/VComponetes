@@ -13,13 +13,14 @@ class PNoteBook extends TElement{
         parent::__construct('div');
 
 
-        $this->id = 'tabs';
+        $this->id = 'tabs'.uniqid();
 
 $width1 = $width + 10;
 $heigth1 = $heigth +20;
 
         $this->ul = new TElement('ul');
-        $this->ul->id = 'pnotebook' . uniqid();
+        $this->ul->id = 'pnotebook'.uniqid();
+        
         $this->ul->class="tabs";
         $this->style= "width :{$width1}px;heigth :{$heigth1}px;";
         
@@ -82,7 +83,7 @@ $li->add($a);
         $script = new TElement('script');
         $script->type = 'text/javascript';
         $code = "  $(function() {
-$( '#tabs' ).tabs();
+$( '#{$this->id}' ).tabs();
 });";
         $script->add($code);
         parent::add($script);
