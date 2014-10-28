@@ -8,16 +8,19 @@ class PNoteBook extends TElement{
     protected  $content;
  protected $page_active;
 
-    public function __construct()
+    public function __construct($width,$heigth)
     {
         parent::__construct('div');
 
 
         $this->id = 'tabs';
 
+
         $this->ul = new TElement('ul');
         $this->ul->id = 'pnotebook' . uniqid();
         $this->ul->class="tabs";
+$this->ul->style= "width : {$width}px;heigth :{$heigth}px";
+
 
 
         $this->elements = array();
