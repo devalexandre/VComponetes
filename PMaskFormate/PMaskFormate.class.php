@@ -91,7 +91,7 @@ class PMaskFormate {
  * @return string
  */
 
-public function data_us_to_br($dataUsa){
+public static  function data_us_to_br($dataUsa){
 	
 	if($dataUsa){
 	$ano =substr($dataUsa,0,4);
@@ -113,7 +113,7 @@ public function data_us_to_br($dataUsa){
  * @param date $dataBR
  * @return string
  */
-public function data_br_to_us($dataBR){
+public static function  data_br_to_us($dataBR){
 	
 	if($dataBR){
 	$ano =substr($dataBR,6,4);

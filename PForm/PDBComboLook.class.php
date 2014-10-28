@@ -15,6 +15,7 @@ class PDBComboLook extends TDBFCombo{
 
    protected $changeaction; 
     protected $function;
+    protected $banco;
     
     /**
      * Class Constructor
@@ -38,6 +39,8 @@ parent::__construct($name, $database, $model,
             $expression = NULL);
     
     TPage::include_css('app/lib/pwd/util/css/bootstrap.css');
+
+    $this->banco = $database;
     
  }
  
@@ -66,21 +69,21 @@ parent::__construct($name, $database, $model,
     
 
 
-public function addPopulationTarget(TCombo $alvo,$model,$banco,$key,$key_busca,$value,$key_valor,$ordercolumn= null){
+public function addPopulationTarget(TCombo $alvo,$model,$frm,$key_busca,$value,$key_valor,$ordercolumn= null){
 
 if($this->changeaction){
 // carrega objetos do banco de dados
-        TTransaction::open($banco);
+        TTransaction::open($this->banco);
         // instancia um repositório de Estado
         $repository = new TRepository($model);
         $criteria = new TCriteria;
-        $criteria->setProperty('order', isset($ordercolumn) ? $ordercolumn : $key);
+        $criteria->setProperty('order', isset($ordercolumn) ? $ordercolumn : $key_busca);
         $criteria->add(new TFilter($key_busca, '=',$key_valor));
         
         
      
         // carrega todos objetos
-        $collection = $repository->load($criteria);
+        $collection = $repository->{$model};
         
      
             $items = array();
@@ -91,12 +94,9 @@ if($this->changeaction){
                 
             }
        
-            
-            
-            // $alvo->reload($alvo->formName,$alvo->getName(),$items);
-            $alvo->addItems($items);
+
            
-        
+        TCombo::reload($frm,$alvo->getName(),$items);
         TTransaction::close();
 }else{
 

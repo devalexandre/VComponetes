@@ -32,6 +32,7 @@ function __construct($cep){
          parse_str($resultado, $retorno);
 
 
+        exit;
     $this->rua = $retorno['logradouro'] ;
     $this->bairro = $retorno['bairro'] ;
     $this->cidade = $retorno['cidade'] ;

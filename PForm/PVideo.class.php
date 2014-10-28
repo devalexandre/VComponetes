@@ -9,7 +9,8 @@ class PVideo extends TElement
     
     /**
      * Class Constructor
-     * @param $source Image path
+     * @param $source video path
+     * @see format .flv
      */
     public function __construct($source,$youtube = true)
     {

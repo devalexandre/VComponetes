@@ -174,6 +174,7 @@ class PButton  extends TField implements IWidget
                             }
                         });
                        {$this->function};
+
                        $.post('engine.php?{$url}',
                               \$('#{$this->formName}').serialize(),
                               function(result)
@@ -181,6 +182,10 @@ class PButton  extends TField implements IWidget
                                   __adianti_load_html(result);
                                   $.unblockUI();
                               });
+
+
+
+
                        return false;";
                         
             $this->button = new TElement('button');
