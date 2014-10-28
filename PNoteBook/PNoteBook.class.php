@@ -15,10 +15,14 @@ class PNoteBook extends TElement{
 
         $this->id = 'tabs';
 
+$width1 = $width + 10;
+$heigth1 = $heigth +20;
 
         $this->ul = new TElement('ul');
         $this->ul->id = 'pnotebook' . uniqid();
         $this->ul->class="tabs";
+        $this->style= "width :{$width1}px;heigth :{$heigth1}px;";
+        
 $this->ul->style= "width : {$width}px;heigth :{$heigth}px";
 
 
