@@ -23,6 +23,7 @@ class PPieChart extends TElement{
         require_once('lib/GoogChart.class.php');
 
         $this->chart = new GoogChart();
+        
 
 
     }
@@ -104,6 +105,23 @@ class PPieChart extends TElement{
 
 
     public function show(){
+    
+    
+    $legenda  = new TElement('div');
+    $i = 0;
+    
+    foreach($this->data as $dados => $valor):
+    $p = new TElement('div');
+      $p->add($dados." : ".$valor );
+    $v = new TElement('div');
+  
+    $v->style = "background:".$this->color[$i].";width:5px;height:5px";
+    $p->add($v);
+    
+    $legenda->add($p);
+    $i++;
+    endforeach;
+
 
 
         $this->chart->setChartAttrs( array(
@@ -111,26 +129,60 @@ class PPieChart extends TElement{
             'title' => $this->title,
             'data' => $this->data,
             'size' => $this->size,
-            'color' => $this->color
+            'color' => $this->color,
+            
+            
+         
         ));
 
-        $this->add("$this->chart");
+$TVBox = new TVBox();
+$TVBox->add($legenda);
+$TVBox->add("$this->chart");
+
+
+        $this->add($TVBox);
 
 
         parent::show();
     }
     
-    public function  renderize(){
+    public function renderize(){
     
-    $this->chart->setChartAttrs( array(
+    $legenda  = new TElement('div');
+    $i = 0;
+    
+    foreach($this->data as $dados => $valor):
+    $p = new TElement('div');
+      $p->add($dados." : ".$valor );
+    $v = new TElement('div');
+  
+    $v->style = "background:".$this->color[$i].";width:5px;height:5px";
+    $p->add($v);
+    
+    $legenda->add($p);
+    $i++;
+    endforeach;
+
+
+
+        $this->chart->setChartAttrs( array(
             'type' => 'pie',
             'title' => $this->title,
             'data' => $this->data,
             'size' => $this->size,
-            'color' => $this->color
+            'color' => $this->color,
+            
+            
+         
         ));
+
+$TVBox = new TVBox();
+$TVBox->add($legenda);
+$TVBox->add("$this->chart");
+
+
+        $this->add($TVBox);
         
-        return "$this->chart";
-    
-    }
+        return $TVBox;
+        }
 } 

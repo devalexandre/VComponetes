@@ -22,7 +22,7 @@ class PLabel implements IWidget
     public function __construct($value,$type = 'default')
     {
 
-        TPage::include_css('app/lib/PComponetes/util/css/bootstrap.css');
+          TPage::include_css('app/lib/PComponetes/util/label.min.css');
         
         // set the label's content
         $this->setValue($value);

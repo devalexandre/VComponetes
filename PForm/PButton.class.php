@@ -28,7 +28,7 @@ class PButton  extends TField implements IWidget
       self::setName($name);
       $this->setType($type);
 
-        TPage::include_css('app/lib/PComponetes/util/css/bootstrap.css');
+        TPage::include_css('app/lib/PComponetes/util/btn.min.css');
      }
      
      /**
@@ -70,32 +70,32 @@ class PButton  extends TField implements IWidget
     switch($type){
     
     case 'primary':
-     $this->type = 'btn btn-'.$type;
+     $this->type = 'pbtn pbtn-'.$type;
     break;
     
     case 'success':
-     $this->type = 'btn btn-'.$type;
+     $this->type = 'pbtn pbtn-'.$type;
     break;
     
     case 'info':
-     $this->type = 'btn btn-'.$type;
+     $this->type = 'pbtn pbtn-'.$type;
     break;
     
     case 'warning':
-     $this->type = 'btn btn-'.$type;
+     $this->type = 'pbtn pbtn-'.$type;
     break;
     
     case 'danger':
-     $this->type = 'btn btn-'.$type;
+     $this->type = 'pbtn pbtn-'.$type;
     break;
     
       
     case 'Link':
-     $this->type = 'btn btn-'.$type;
+     $this->type = 'pbtn pbtn-'.$type;
     break;
     
     default:
-     $this->type = 'btn btn-default';
+     $this->type = 'pbtn pbtn-default';
     
     
    
