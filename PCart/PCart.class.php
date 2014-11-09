@@ -14,6 +14,10 @@ private $cart;
 
   public function addItem(PProduto $produto){
 
+if(TSession::getValue('cart')){
+
+$this->cart = TSession::getValue('cart');
+  }
   
 $this->cart[$produto->getId()] = $produto;
 
@@ -22,14 +26,22 @@ $this->atualiza();
 }
 
 public function removeItem($id){
+if(TSession::getValue('cart')){
 
+$this->cart = TSession::getValue('cart');
+  }
+  
 unset( $this->cart[$id]);
+
 $this->atualiza();
 }
 
   
  public function debug(){
- 
+ if(TSession::getValue('cart')){
+
+$this->cart = TSession::getValue('cart');
+  }
  var_dump($this->cart);
  }
  
