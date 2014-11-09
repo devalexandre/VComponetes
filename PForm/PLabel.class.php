@@ -13,8 +13,8 @@ class PLabel implements IWidget
 {
  
     private $value;
-    private $type = 'label label-default';
-    
+    private $type = 'glyphicon glyphicon-default';
+    private $ico;
     /**
      * Class Constructor
      * @param  $value text label
@@ -37,6 +37,15 @@ class PLabel implements IWidget
         
      
      
+    }
+    
+    public function setIco(PIco $ico){
+    
+    $this->ico = $ico;
+    }
+    
+    public function getIco(){
+    return $this->ico;
     }
     
        /**
@@ -97,32 +106,32 @@ class PLabel implements IWidget
     switch($type){
     
     case 'primary':
-     $this->type = 'label label-'.$type;
+     $this->type = 'plabel plabel-'.$type;
     break;
     
     case 'success':
-     $this->type = 'label label-'.$type;
+     $this->type = 'plabel plabel-'.$type;
     break;
     
     case 'info':
-     $this->type = 'label label-'.$type;
+     $this->type = 'plabel plabel-'.$type;
     break;
     
     case 'warning':
-     $this->type = 'label label-'.$type;
+     $this->type = 'plabel plabel-'.$type;
     break;
     
     case 'danger':
-     $this->type = 'label label-'.$type;
+     $this->type = 'plabel plabel-'.$type;
     break;
     
       
     case 'Link':
-     $this->type = 'label label-'.$type;
+     $this->type = 'plabel plabel-'.$type;
     break;
     
     default:
-     $this->type = 'label label-default';
+     $this->type = 'plabel plabel-default';
     
     
    
@@ -137,6 +146,10 @@ class PLabel implements IWidget
      */
     public function show()
     {
+    
+    if($this->getIco()){
+        $this->tag->add($this->getIco());
+    }
            // add content to the tag
             $this->tag->add($this->value);
         

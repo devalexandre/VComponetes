@@ -19,6 +19,7 @@ class PButton  extends TField implements IWidget
     private $image;
     private $function;
     private $type;
+    private $ico;
    
     protected $button;
 
@@ -59,6 +60,14 @@ class PButton  extends TField implements IWidget
         $this->formName = $name;
     }
     
+     public function setIco(PIco $ico){
+     $this->ico = $ico;
+     
+     }
+      private  function getIco(){
+    return  $this->ico ;
+     
+     }
      
     /** Define type of Button
     *primary,success,info,warning,danger,Link
@@ -220,6 +229,12 @@ class PButton  extends TField implements IWidget
             $image->{'style'} = 'padding-right:4px';
             $span->add($image);
         }
+        
+        if($this->getIco()){
+        
+           $this->button->add($this->getIco());
+        }
+        
         $span->add($this->label);
         $this->button->add($span);
         $this->button->show();
