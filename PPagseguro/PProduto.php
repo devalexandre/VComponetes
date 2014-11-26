@@ -9,6 +9,7 @@ class PProduto{
 	private $descricao;
 	private $preco;
 	private $qtd;
+	private $peso;
 	
 	
 	/**
@@ -27,6 +28,25 @@ class PProduto{
 	 */
 	public function setNome($nome) {
 	    $this->nome = $nome;
+	}
+	
+	
+		/**
+	 * Returns the peso value.
+	 *
+	 * @return variableType
+	 */
+	public function getPeso() {
+	    return (empty($this->peso)?0:$this->peso);
+	}
+	 
+	/**
+	 * Set the peso value.
+	 *
+	 * @param variableType $peso
+	 */
+	public function setPeso($peso) {
+	    $this->peso = $peso;
 	}
 	
 	

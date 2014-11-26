@@ -6,7 +6,12 @@ class PPagSeguro {
 private $pg;
 private $conta;
 private $token;
-
+private $moeda;
+private $redirectURL;
+private $itens;
+private $reference;
+private $url;
+private $code;
 
 function __construct($file){
 
@@ -14,8 +19,42 @@ function __construct($file){
 $this->pg = new PagSeguroPaymentRequest();
 
 $this->init($file);
+$this->moeda = "BRL";
+$this->itens = array();
+$this->pg->setCurrency($this->getMoeda());
+}
+
+public function getCode(){
+return $this->code;
+}
+
+public function setMoeda($moeda ="BRL"){
+
+$this->moeda = $moeda;
 
 }
+
+public function getMoeda(){
+
+return $this->moeda;
+
+}
+
+public function setRedirectURL($url){
+
+$this->redirectURL = $url;
+
+}
+
+public function getRedirectURL(){
+
+if(empty($this->redirectURL)){
+throw new Exception("preencha a redirectURL");
+}else{
+return $this->redirectURL;
+}
+}
+
 
 public function addCliente(PCliente $cliente){
 	
@@ -49,7 +88,10 @@ public function addCliente(PCliente $cliente){
 public  function addCodVenda($cod){
 	
 	$this->pg->setReference($cod);
+	
+
 }
+
 
 
 public function  addItem(PProduto $produto){
@@ -57,6 +99,7 @@ public function  addItem(PProduto $produto){
 	if(get_class($produto) == 'PProduto'){
 	
 	$this->pg->addItem($produto->getId(),$produto->getNome(),$produto->getQtd(),$produto->getPreco());
+	$this->itens[] = $produto;
 	}else{
 	
 		throw new Exception('Objeto nï¿½o ï¿½ do tipo PProduto');
@@ -205,6 +248,7 @@ public  function getDados($transacao_id){
             $this->conta = $db['email'];
             $this->token= $db['token'];
 
+$this->url = 'https://ws.pagseguro.uol.com.br/v2/checkout?email=' . $this->conta . '&token=' . $this->token;
 
         }
         else
@@ -212,6 +256,128 @@ public  function getDados($transacao_id){
             // if the database doesn't exists, throws an exception
             throw new Exception(TAdiantiCoreTranslator::translate('File not found') . ': ' ."'{$database}.ini'");
         }
+    }
+    
+    // faz a venda usando xml e curl_close
+    public function MakeCurl(){
+    
+ #versao do encoding xml
+$dom = new DOMDocument("1.0", "UTF-8");
+
+#retirar os espacos em branco
+$dom->preserveWhiteSpace = false;
+
+#gerar o codigo
+$dom->formatOutput = true;
+
+#criando o nó principal (root)
+$root = $dom->createElement("checkout");
+$currency = $dom->createElement("currency", $this->pg->getCurrency());
+$root->appendChild($currency);
+
+$redirectURL = $dom->createElement("redirectURL", $this->getRedirectURL());  
+$root->appendChild($redirectURL);
+ 
+ $itens = $dom->createElement("items");;
+ 
+ foreach($this->itens as $produto):
+ 
+ $itens->appendChild($this->addItensXml($dom,$produto));
+ 
+ endforeach;
+ $root->appendChild($itens);
+ 
+ $reference = $dom->createElement('reference',	$this->pg->getReference());
+  $root->appendChild($reference);
+  $dom->appendChild($root);
+    
+    if(is_file("app/output/pagseguro/send/".$this->pg->getReference().".xml")){
+    unlink("app/output/pagseguro/send/".$this->pg->getReference().".xml");
+    }
+    
+
+
+ $dom->save("app/output/pagseguro/send/".$this->pg->getReference().".xml");
+ 
+ 
+    }
+    
+    public function sendData(){
+   
+    $file = file_get_contents("app/output/pagseguro/send/".$this->pg->getReference().".xml");
+ 
+
+ 
+  $curl = curl_init($this->url);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_HTTPHEADER, Array('Content-Type: application/xml; charset=UTF-8'));
+curl_setopt($curl, CURLOPT_POSTFIELDS, $file);
+$xml= curl_exec($curl);
+
+$urlRetorn = 'app/output/pagseguro/return/'.$this->pg->getReference().'.xml';
+
+
+if(file_exists($urlRetorn)){
+
+            unlink('app/output/pagseguro/return/'.$this->pg->getReference().'.xml');
+
+        }
+$retorno = fopen('app/output/pagseguro/return/'.$this->pg->getReference().'.xml','w+');
+ 
+  fwrite($retorno,$xml);
+
+
+if(curl_errno($curl))
+{
+    echo 'Curl error: ' . curl_error($curl);
+}
+
+
+if($xml == 'Unauthorized'){
+    //Insira seu código avisando que o sistema está com problemas, sugiro enviar um e-mail avisando para alguém fazer a manutenção 
+
+  new TMessage('error',"o Sistema temporariamente fora do ar");
+}
+
+curl_close($curl);
+
+
+}
+
+public function gerarUrl(){
+
+$urlXml = 'app/output/pagseguro/return/'.$this->pg->getReference().'.xml';
+
+$file = simplexml_load_file($urlXml);
+
+
+$this->code = $file[0]->code;
+
+
+$url = 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=' .$file[0]->code;
+
+return $url;
+
+}
+    
+    private function addItensXml($dom,PProduto $itens){
+    
+
+    $root = $dom->createElement("item");
+    $id = $dom->createElement("id",$itens->getId());
+    $description = $dom->createElement("description",$itens->getDescricao());
+    $amount = $dom->createElement("amount",$itens->getPreco());
+    $quantity = $dom->createElement("quantity",$itens->getQtd());
+    $weight = $dom->createElement("weight",$itens->getPeso());
+  
+    $root->appendChild($id);
+    $root->appendChild($description); 
+    $root->appendChild($amount); 
+    $root->appendChild($quantity);        
+    $root->appendChild($weight);   
+    
+    return  $root;     
     }
 
 }
