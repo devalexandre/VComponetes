@@ -3,8 +3,8 @@
 /**
  * PCepProgs 
  *
- * @version    1.1
- * @version adianti framework 1.0.3 <
+ * @version    1.0
+ * @version adianti framework 1.0.2
  * @package    widget_web
  * @author     Alexandre E. Souza
  
@@ -32,24 +32,13 @@ function __construct($cep){
 		
     $resultado = curl_exec($ch);
     
-    
-if(curl_exec($ch) === false)
-{
-    throw new Exception('Curl error: ' . curl_error($ch));
-}
-else
-{
-    echo 'Operation completed without any errors';
-}
-
-// Close handle
-curl_close($ch);
-
 
     if($resultado){
         
          parse_str($resultado, $retorno);
 
+
+       
     $this->rua = $retorno['logradouro'] ;
     $this->bairro = $retorno['bairro'] ;
     $this->cidade = $retorno['cidade'] ;
